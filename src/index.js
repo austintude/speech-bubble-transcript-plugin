@@ -4,7 +4,7 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { useBlockProps, MediaUpload, Button } from '@wordpress/block-editor';
 
 registerBlockType( 'transcript-blocks/transcript-block', {
     apiVersion: 2,
@@ -21,20 +21,18 @@ registerBlockType( 'transcript-blocks/transcript-block', {
             default: '',
         },
     },
-    edit: ( props ) => {
-        function fileDecoder(identifier) {
-            const input = document.querySelector(`#${identifier}`);
-            const fReader = new FileReader();
-            fReader.readAsDataURL(input.files[0]);
-            fReader.onloadend = function(event) {
-                props.setAttributes({url: event.target.result})
-            }
-        }
-
+    edit: ( { attributes, setAttributes } ) => {
         return (
             <div {...useBlockProps()}>
-                <label>Upload a file</label>
-                <input id='upload-file' type="file" onChange={() => fileDecoder('upload-file')} />
+                <MediaUpload
+                    onSelect={ ( media ) => setAttributes( { url: media.url } ) }
+                    allowedTypes={ [ 'application/pdf' ] }  // Adjust according to the file types you want to allow
+                    render={ ( { open } ) => (
+                        <Button onClick={ open }>
+                            Upload File
+                        </Button>
+                    ) }
+                />
             </div>
         );
     },
@@ -42,4 +40,3 @@ registerBlockType( 'transcript-blocks/transcript-block', {
         return null;
     },
 } );
-
