@@ -4,7 +4,7 @@
  * Description:       Add downloadable transcripts to your post.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.15
+ * Version:           0.1.17
  * Author:            We Rock DM
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,7 +21,7 @@ function create_block_transcripts_block_block_init() {
     wp_register_script(
         'transcripts-block-editor',
         plugins_url( 'build/index.js', __FILE__ ),
-        array( 'wp-blocks', 'wp-element', 'wp-block-editor' ),
+        array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components' ),
         filemtime( plugin_dir_path( __FILE__ ) . 'build/index.js' ),
         true
     );
@@ -33,7 +33,7 @@ function create_block_transcripts_block_block_init() {
             'style' => 'transcript-block-style',
         )
     );
-    
+
 }
 
 add_action( 'init', 'create_block_transcripts_block_block_init' );
@@ -55,45 +55,44 @@ function handle_uploaded_transcript( WP_REST_Request $request ) {
 
     // Parse the file contents here...
     $parsed_contents = array();
-$lines = explode("\n", $file_contents);
+    $lines = explode("\n", $file_contents);
 
-$cur_speaker = '';
-$cur_speech = '';
+    $cur_speaker = '';
+    $cur_speech = '';
 
-foreach ($lines as $line) {
-    if ($line == '') continue;  // Skip empty lines
+    foreach ($lines as $line) {
+        if ($line == '') continue;  // Skip empty lines
 
-    $parts = explode(":", $line, 2);  // Split at the first colon
+        $parts = explode(":", $line, 2);  // Split at the first colon
 
-    if (count($parts) == 2) {
-        // This line starts a new speech
-        if ($cur_speaker != '' && $cur_speech != '') {
-            // Add the previous speech to the parsed contents
-            $parsed_contents[] = array(
-                "speaker" => $cur_speaker,
-                "speech" => $cur_speech,
-            );
+        if (count($parts) == 2) {
+            // This line starts a new speech
+            if ($cur_speaker != '' && $cur_speech != '') {
+                // Add the previous speech to the parsed contents
+                $parsed_contents[] = array(
+                    "speaker" => $cur_speaker,
+                    "speech" => $cur_speech,
+                );
+            }
+
+            $cur_speaker = trim($parts[0]);
+            $cur_speech = trim($parts[1]);
+        } else {
+            // This line continues the current speech
+            $cur_speech .= ' ' . trim($line);
         }
-
-        $cur_speaker = trim($parts[0]);
-        $cur_speech = trim($parts[1]);
-    } else {
-        // This line continues the current speech
-        $cur_speech .= ' ' . trim($line);
     }
-}
 
-// Add the final speech to the parsed contents
-if ($cur_speaker != '' && $cur_speech != '') {
-    $parsed_contents[] = array(
-        "speaker" => $cur_speaker,
-        "speech" => $cur_speech,
-    );
-}
+    // Add the final speech to the parsed contents
+    if ($cur_speaker != '' && $cur_speech != '') {
+        $parsed_contents[] = array(
+            "speaker" => $cur_speaker,
+            "speech" => $cur_speech,
+        );
+    }
 
-// Return the parsed contents
-return rest_ensure_response( $parsed_contents );
-
+    // Return the parsed contents
+    return rest_ensure_response( $parsed_contents );
 }
 
 add_action( 'rest_api_init', function () {
@@ -112,9 +111,9 @@ function transcript_block_scripts() {
     );
 
     $speaker_colors = array(
-        'speaker_1_color' => get_option('speaker_1_color'),
-        'speaker_2_color' => get_option('speaker_2_color'),
-        'speaker_3_color' => get_option('speaker_3_color'),
+        'speaker_1_color' => get_option('speaker_1_color', '#000000'),
+        'speaker_2_color' => get_option('speaker_2_color', '#000000'),
+        'speaker_3_color' => get_option('speaker_3_color', '#000000'),
     );
 
     wp_localize_script('transcript-block-script', 'transcriptBlockParams', $speaker_colors);
@@ -126,6 +125,36 @@ function transcript_block_scripts() {
     );
 }
 
+function transcript_block_frontend_styles() {
+    wp_enqueue_style(
+        'transcript-block-frontend-style',
+        plugins_url( 'build/style-index.css', __FILE__ ),
+        array(),
+        filemtime( plugin_dir_path( __FILE__ ) . 'build/style-index.css' )
+    );
+}
+
+add_action( 'wp_enqueue_scripts', 'transcript_block_frontend_styles' );
+
+function transcript_block_add_admin_menu() {
+    add_menu_page(
+        'Transcript Block Settings', // page title
+        'Transcript Block Settings', // menu title
+        'manage_options', // capability
+        'transcript_block', // menu slug
+        'transcript_block_options_page' // callback function
+    );
+}
+
+add_action( 'admin_menu', 'transcript_block_add_admin_menu' );
+
+function transcript_block_options_page() {
+    // This function will contain the HTML for your settings page.
+    // You'll want to add form fields here for your speaker colors,
+    // and handle saving those options.
+}
+
 add_action('enqueue_block_editor_assets', 'transcript_block_scripts');
 
 // ... The rest of your code ...
+

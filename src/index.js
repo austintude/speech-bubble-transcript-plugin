@@ -1,17 +1,11 @@
-""/**
+/**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps, MediaUpload } from '@wordpress/block-editor';
+import { useBlockProps, MediaUpload, PanelColorSettings } from '@wordpress/block-editor';
 import { Button } from '@wordpress/components';
-
-
-// Add console logs here
-console.log('MediaUpload: ', MediaUpload);
-console.log('Button: ', Button);
-console.log('useBlockProps: ', useBlockProps);
 
 registerBlockType( 'transcript-blocks/transcript-block', {
     apiVersion: 2,
@@ -31,9 +25,23 @@ registerBlockType( 'transcript-blocks/transcript-block', {
             type: 'array',
             default: [],
         },
+        speaker_1_color: {
+            type: 'string',
+            default: '#000000', // Default color
+        },
+        speaker_2_color: {
+            type: 'string',
+            default: '#000000', // Default color
+        },
+        speaker_3_color: {
+            type: 'string',
+            default: '#000000', // Default color
+        },
     },
     edit: ( { attributes, setAttributes } ) => {
         const blockProps = useBlockProps( { className: 'my-class-name' } );
+        const { speaker_1_color, speaker_2_color, speaker_3_color } = attributes;
+
         return (
             <div {...blockProps}>
                 <MediaUpload
@@ -66,7 +74,47 @@ registerBlockType( 'transcript-blocks/transcript-block', {
                         </Button>
                     ) }
                 />
-    
+                
+                {/* Add color settings */}
+                <PanelColorSettings
+                    title="Speaker 1 Color"
+                    colorSettings={[
+                        {
+                            value: speaker_1_color,
+                            onChange: (newColor) => {
+                                setAttributes({ speaker_1_color: newColor });
+                            },
+                            label: 'Speaker 1 Color',
+                        },
+                    ]}
+                />
+
+                <PanelColorSettings
+                    title="Speaker 2 Color"
+                    colorSettings={[
+                        {
+                            value: speaker_2_color,
+                            onChange: (newColor) => {
+                                setAttributes({ speaker_2_color: newColor });
+                            },
+                            label: 'Speaker 2 Color',
+                        },
+                    ]}
+                />
+
+                <PanelColorSettings
+                    title="Speaker 3 Color"
+                    colorSettings={[
+                        {
+                            value: speaker_3_color,
+                            onChange: (newColor) => {
+                                setAttributes({ speaker_3_color: newColor });
+                            },
+                            label: 'Speaker 3 Color',
+                        },
+                    ]}
+                />
+                
                 {/* Add this to display the transcript in the editor */}
                 { attributes.transcript && attributes.transcript.map( ( { speaker, speech }, i ) => (
                     <div key={i} className="transcript-block-speech">
@@ -83,7 +131,7 @@ registerBlockType( 'transcript-blocks/transcript-block', {
                 { attributes.url && <a href={ attributes.url } download>Download Transcript</a> }
                 { attributes.transcript && attributes.transcript.map( ( { speaker, speech }, i ) => (
                     <div key={i} className="transcript-block-speech">
-                        <strong>{ speaker }</strong>: { speech }
+                        <strong style={{ color: attributes[`speaker_${i + 1}_color`] }}>{ speaker }</strong>: { speech }
                     </div>
                 ) ) }
             </div>
