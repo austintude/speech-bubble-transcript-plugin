@@ -1,4 +1,4 @@
-/**
+""/**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
@@ -33,8 +33,9 @@ registerBlockType( 'transcript-blocks/transcript-block', {
         },
     },
     edit: ( { attributes, setAttributes } ) => {
+        const blockProps = useBlockProps( { className: 'my-class-name' } );
         return (
-            <div {...useBlockProps()}>
+            <div {...blockProps}>
                 <MediaUpload
                     onSelect={ async ( media ) => {
                         setAttributes( { url: media.url } );
@@ -68,7 +69,7 @@ registerBlockType( 'transcript-blocks/transcript-block', {
     
                 {/* Add this to display the transcript in the editor */}
                 { attributes.transcript && attributes.transcript.map( ( { speaker, speech }, i ) => (
-                    <div key={i}>
+                    <div key={i} className="transcript-block-speech">
                         <strong>{ speaker }</strong>: { speech }
                     </div>
                 ) ) }
@@ -76,11 +77,12 @@ registerBlockType( 'transcript-blocks/transcript-block', {
         );
     },
     save: ( { attributes } ) => {
+        const blockProps = useBlockProps.save();
         return (
-            <div>
+            <div {...blockProps}>
                 { attributes.url && <a href={ attributes.url } download>Download Transcript</a> }
                 { attributes.transcript && attributes.transcript.map( ( { speaker, speech }, i ) => (
-                    <div key={i}>
+                    <div key={i} className="transcript-block-speech">
                         <strong>{ speaker }</strong>: { speech }
                     </div>
                 ) ) }
@@ -89,3 +91,4 @@ registerBlockType( 'transcript-blocks/transcript-block', {
     },
     
 } );
+import './style.scss';

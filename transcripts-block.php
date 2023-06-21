@@ -4,7 +4,7 @@
  * Description:       Add downloadable transcripts to your post.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.9
+ * Version:           0.1.15
  * Author:            We Rock DM
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,20 +21,23 @@ function create_block_transcripts_block_block_init() {
     wp_register_script(
         'transcripts-block-editor',
         plugins_url( 'build/index.js', __FILE__ ),
-        array( 'wp-blocks', 'wp-element', 'wp-block-editor' ),  // <-- Changed 'wp-editor' to 'wp-block-editor'
+        array( 'wp-blocks', 'wp-element', 'wp-block-editor' ),
         filemtime( plugin_dir_path( __FILE__ ) . 'build/index.js' ),
         true
     );
 
     register_block_type(
-        'transcript-blocks/transcript-block',  // <-- This should match your block's name
+        'transcript-blocks/transcript-block',
         array(
-            'editor_script' => 'transcripts-block-editor',  // <-- This should match the handle of your registered script
+            'editor_script' => 'transcripts-block-editor',
+            'style' => 'transcript-block-style',
         )
     );
+    
 }
 
 add_action( 'init', 'create_block_transcripts_block_block_init' );
+
 function handle_uploaded_transcript( WP_REST_Request $request ) {
     $file_id = $request->get_param( 'id' );
 
@@ -93,10 +96,36 @@ return rest_ensure_response( $parsed_contents );
 
 }
 
-
 add_action( 'rest_api_init', function () {
     register_rest_route( 'transcript-blocks/v1', '/parse-transcript', array(
         'methods' => WP_REST_Server::EDITABLE,
         'callback' => 'handle_uploaded_transcript',
     ) );
 } );
+
+function transcript_block_scripts() {
+    wp_enqueue_script(
+        'transcript-block-script',
+        plugin_dir_url( __FILE__ ) . 'build/index.js',
+        array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'jquery'),
+        true
+    );
+
+    $speaker_colors = array(
+        'speaker_1_color' => get_option('speaker_1_color'),
+        'speaker_2_color' => get_option('speaker_2_color'),
+        'speaker_3_color' => get_option('speaker_3_color'),
+    );
+
+    wp_localize_script('transcript-block-script', 'transcriptBlockParams', $speaker_colors);
+    wp_enqueue_style(
+        'transcript-block-style',
+        plugins_url( 'build/style-index.css', __FILE__ ),
+        array(),
+        filemtime( plugin_dir_path( __FILE__ ) . 'build/style-index.css' )
+    );
+}
+
+add_action('enqueue_block_editor_assets', 'transcript_block_scripts');
+
+// ... The rest of your code ...
