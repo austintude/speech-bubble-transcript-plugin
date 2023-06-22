@@ -1,1 +1,451 @@
-(()=>{"use strict";var e,t={942:()=>{const e=window.wp.element,t=(window.ReactDOM,window.wp.blocks),r=window.wp.blockEditor,a=window.wp.components,n=window.wp.i18n;(0,t.registerBlockType)("transcript-blocks/transcript-block",{apiVersion:2,title:"Transcript Block",description:"Add downloadable transcripts to your post.",category:"media",icon:"media-text",supports:{html:!1},attributes:{url:{type:"string",default:""},transcript:{type:"array",default:[]},speakers:{type:"array",default:[]}},edit:t=>{const{attributes:{url:o,transcript:s,speakers:c},setAttributes:l}=t,i=(0,r.useBlockProps)({className:"my-class-name"});return(0,e.createElement)("div",i,c.map(((t,o)=>(0,e.createElement)("div",{key:o},(0,e.createElement)(a.TextControl,{value:t.name,onChange:e=>l({speakers:c.map(((t,r)=>o===r?{...t,name:e}:t))})}),(0,e.createElement)(r.PanelColorSettings,{title:(0,n.__)("Color Settings","textdomain"),initialOpen:!1,colorSettings:[{value:t.color,onChange:e=>l({speakers:c.map(((t,r)=>o===r?{...t,color:e}:t))}),label:(0,n.__)("Background Color","textdomain")}]}),(0,e.createElement)(a.Button,{isDestructive:!0,onClick:()=>l({speakers:c.filter(((e,t)=>o!==t))})},(0,n.__)("Remove Speaker","textdomain"))))),(0,e.createElement)(a.Button,{variant:"primary",onClick:()=>l({speakers:[...c,{name:"Speaker "+(c.length+1),color:"#000000"}]})},(0,n.__)("Add Speaker","textdomain")),(0,e.createElement)(r.MediaUpload,{onSelect:async e=>{l({url:e.url});try{const t=await fetch("/wp-json/transcript-blocks/v1/parse-transcript",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:e.id})});if(!t.ok)throw new Error("HTTP error "+t.status);const r=await t.json();l({transcript:r})}catch(e){console.error(e)}},allowedTypes:["text/plain"],render:t=>{let{open:r}=t;return(0,e.createElement)(a.Button,{onClick:r},(0,n.__)("Upload File","textdomain"))}}),s&&s.map(((t,r)=>{let{speaker:a,speech:n}=t;const o=c.find((e=>e.name===a));return(0,e.createElement)("div",{key:r,className:"transcript-block-wrapper"},(0,e.createElement)("strong",{className:"transcript-block-speech-speaker"},a,":"),(0,e.createElement)("div",{className:"transcript-block-speech",style:{backgroundColor:o?o.color:"#ffffff"}},(0,e.createElement)("span",{className:"transcript-block-speech-text"},n)))})))},save:t=>{const{attributes:{url:a,transcript:o,speakers:s}}=t,c=r.useBlockProps.save();return(0,e.createElement)("div",c,a&&(0,e.createElement)("a",{href:a,download:!0},(0,n.__)("Download Transcript","textdomain")),o&&o.map(((t,r)=>{let{speaker:a,speech:n}=t;const o=s.find((e=>e.name===a))||{};return(0,e.createElement)("div",{key:r,className:"transcript-block-wrapper"},(0,e.createElement)("strong",{className:"transcript-block-speech-speaker"},a,":"),(0,e.createElement)("div",{className:"transcript-block-speech",style:{backgroundColor:o.color}},(0,e.createElement)("span",{className:"transcript-block-speech-text"},n)))})))}})}},r={};function a(e){var n=r[e];if(void 0!==n)return n.exports;var o=r[e]={exports:{}};return t[e](o,o.exports,a),o.exports}a.m=t,e=[],a.O=(t,r,n,o)=>{if(!r){var s=1/0;for(p=0;p<e.length;p++){for(var[r,n,o]=e[p],c=!0,l=0;l<r.length;l++)(!1&o||s>=o)&&Object.keys(a.O).every((e=>a.O[e](r[l])))?r.splice(l--,1):(c=!1,o<s&&(s=o));if(c){e.splice(p--,1);var i=n();void 0!==i&&(t=i)}}return t}o=o||0;for(var p=e.length;p>0&&e[p-1][2]>o;p--)e[p]=e[p-1];e[p]=[r,n,o]},a.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),(()=>{var e={826:0,431:0};a.O.j=t=>0===e[t];var t=(t,r)=>{var n,o,[s,c,l]=r,i=0;if(s.some((t=>0!==e[t]))){for(n in c)a.o(c,n)&&(a.m[n]=c[n]);if(l)var p=l(a)}for(t&&t(r);i<s.length;i++)o=s[i],a.o(e,o)&&e[o]&&e[o][0](),e[o]=0;return a.O(p)},r=globalThis.webpackChunktranscripts_block=globalThis.webpackChunktranscripts_block||[];r.forEach(t.bind(null,0)),r.push=t.bind(null,r.push.bind(r))})();var n=a.O(void 0,[431],(()=>a(942)));n=a.O(n)})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./style.scss */ "./src/style.scss");
+
+/**
+ * Registers a new block provided a unique name and an object defining its behavior.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
+ */
+
+
+
+
+
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('transcript-blocks/transcript-block', {
+  apiVersion: 2,
+  title: 'Transcript Block',
+  description: 'Add downloadable transcripts to your post.',
+  category: 'media',
+  icon: 'media-text',
+  supports: {
+    html: false
+  },
+  attributes: {
+    url: {
+      type: 'string',
+      default: ''
+    },
+    transcript: {
+      type: 'array',
+      default: []
+    },
+    speakers: {
+      type: 'array',
+      default: [{
+        name: 'Speaker 1',
+        color: '#000000',
+        role: 'host'
+      }]
+    }
+  },
+  edit: props => {
+    const {
+      attributes: {
+        url,
+        transcript,
+        speakers
+      },
+      setAttributes
+    } = props;
+    const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({
+      className: 'my-class-name'
+    });
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", blockProps, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
+      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Speakers Settings", "textdomain"),
+      initialOpen: true
+    }, speakers.map((speaker, i) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: i
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Name", "textdomain"),
+      value: speaker.name,
+      onChange: name => setAttributes({
+        speakers: speakers.map((s, j) => i === j ? {
+          ...s,
+          name
+        } : s)
+      })
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.PanelColorSettings, {
+      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Color Settings", "textdomain"),
+      initialOpen: false,
+      colorSettings: [{
+        value: speaker.color,
+        onChange: color => setAttributes({
+          speakers: speakers.map((s, j) => i === j ? {
+            ...s,
+            color
+          } : s)
+        }),
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Background Color", "textdomain")
+      }]
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Role", "textdomain"),
+      value: speaker.role,
+      options: [{
+        label: 'Guest',
+        value: 'guest'
+      }, {
+        label: 'Host',
+        value: 'host'
+      }],
+      onChange: role => setAttributes({
+        speakers: speakers.map((s, j) => i === j ? {
+          ...s,
+          role
+        } : s)
+      })
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      isDestructive: true,
+      onClick: () => setAttributes({
+        speakers: speakers.filter((s, j) => i !== j)
+      })
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Remove Speaker", "textdomain")))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      variant: "primary",
+      onClick: () => setAttributes({
+        speakers: [...speakers, {
+          name: "Speaker " + (speakers.length + 1),
+          color: "#000000",
+          role: "host"
+        }]
+      })
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Add Speaker", "textdomain")))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUpload, {
+      onSelect: async media => {
+        setAttributes({
+          url: media.url
+        });
+        try {
+          const response = await fetch('/wp-json/transcript-blocks/v1/parse-transcript', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: media.id
+            })
+          });
+          if (!response.ok) {
+            throw new Error('HTTP error ' + response.status);
+          }
+          const parsedContents = await response.json();
+          setAttributes({
+            transcript: parsedContents
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      },
+      allowedTypes: ['text/plain'],
+      render: _ref => {
+        let {
+          open
+        } = _ref;
+        return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+          onClick: open
+        }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Upload File", "textdomain"));
+      }
+    }), transcript && transcript.map((_ref2, i) => {
+      let {
+        speaker,
+        speech
+      } = _ref2;
+      const speakerData = speakers.find(s => s.name === speaker);
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        key: i,
+        className: `transcript-block-wrapper ${speakerData.role === 'guest' ? 'guest' : 'host'}`
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", {
+        className: "transcript-block-speech-speaker"
+      }, speaker, ":"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "transcript-block-speech",
+        style: {
+          backgroundColor: speakerData ? speakerData.color : "#ffffff"
+        }
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        className: "transcript-block-speech-text"
+      }, speech)));
+    }));
+  },
+  save: props => {
+    const {
+      attributes: {
+        url,
+        transcript,
+        speakers
+      }
+    } = props;
+    const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save();
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", blockProps, url && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: url,
+      download: true
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Download Transcript", "textdomain")), transcript && transcript.map((_ref3, i) => {
+      let {
+        speaker,
+        speech
+      } = _ref3;
+      const speakerData = speakers.find(s => s.name === speaker);
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        key: i,
+        className: `transcript-block-wrapper ${speakerData.role === 'guest' ? 'guest' : 'host'}`
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", {
+        className: "transcript-block-speech-speaker"
+      }, speaker, ":"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "transcript-block-speech",
+        style: {
+          backgroundColor: speakerData ? speakerData.color : "#ffffff"
+        }
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        className: "transcript-block-speech-text"
+      }, speech)));
+    }));
+  }
+});
+
+/***/ }),
+
+/***/ "./src/style.scss":
+/*!************************!*\
+  !*** ./src/style.scss ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["blockEditor"];
+
+/***/ }),
+
+/***/ "@wordpress/blocks":
+/*!********************************!*\
+  !*** external ["wp","blocks"] ***!
+  \********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["element"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["i18n"];
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"index": 0,
+/******/ 			"./style-index": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = globalThis["webpackChunktranscripts_block"] = globalThis["webpackChunktranscripts_block"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["./style-index"], () => (__webpack_require__("./src/index.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=index.js.map

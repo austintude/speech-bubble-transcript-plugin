@@ -1,38 +1,33 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
-
-.wp-block-create-block-transcripts-block {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
-}
-.wp-block-transcript-blocks-transcript-block .transcript-block-speech {
+.transcript-block-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
     margin-bottom: 1em;
-}
-
-.wp-block-transcript-blocks-transcript-block .transcript-block-speech:nth-child(3n+1) {
-    background-color: blue;
-}
-
-.wp-block-transcript-blocks-transcript-block .transcript-block-speech:nth-child(3n+2) {
-    background-color: red;
-}
-
-.wp-block-transcript-blocks-transcript-block .transcript-block-speech:nth-child(3n) {
-    background-color: green;
-}
-
-.transcript-block-speech {
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-  }
   
-  .transcript-block-speech-speaker {
-    margin-right: 5px;
-  }
+    &.guest .transcript-block-speech {
+      margin-left: 0;
+      margin-right: auto;
+      width: 75%;
+    }
   
+    &.host {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+  
+    &.host .transcript-block-speech {
+      margin-left: auto;
+      margin-right: 0;
+      width: 75%;
+    }
+  
+    .transcript-block-speech-speaker {
+      font-weight: bold;
+    }
+  
+    .transcript-block-speech {
+      padding: 1em;
+      margin: 0.5em;
+      border-radius: 8px
+    }
+}
