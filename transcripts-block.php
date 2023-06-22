@@ -4,7 +4,7 @@
  * Description:       Add downloadable transcripts to your post.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.17
+ * Version:           0.1.23
  * Author:            We Rock DM
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -157,4 +157,5 @@ function transcript_block_options_page() {
 add_action('enqueue_block_editor_assets', 'transcript_block_scripts');
 
 // ... The rest of your code ...
+error_log('Parsed contents: ' . print_r($parsed_contents, true));
 

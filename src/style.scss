@@ -25,3 +25,14 @@
 .wp-block-transcript-blocks-transcript-block .transcript-block-speech:nth-child(3n) {
     background-color: green;
 }
+
+.transcript-block-speech {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .transcript-block-speech-speaker {
+    margin-right: 5px;
+  }
+  
