@@ -17,13 +17,17 @@
       width: 75%;
     }
   }
-  
+  .speaker-avatar {
+    position: absolute;
+  }
   .transcript-block-wrapper.guest {
     .transcript-block-speech-speaker {
       text-align: left;
       justify-self: start; /* aligns text to the start (left) for guests */
     }
-  
+    .speaker-avatar {
+        left: 0;
+      }
     .transcript-block-speech {
       justify-self: start; /* aligns speech bubble to the start (left) for guests */
     }
@@ -33,7 +37,9 @@
     .transcript-block-speech-speaker {
       text-align: right;
     }
-  
+    .speaker-avatar {
+        right: 0;
+      }
     .transcript-block-speech {
       justify-self: end; /* aligns speech bubble to the end (right) for hosts */
     }

@@ -4,7 +4,12 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps, MediaUpload, InspectorControls, PanelColorSettings } from '@wordpress/block-editor';
+import {
+  useBlockProps,
+  MediaUpload,
+  InspectorControls,
+  PanelColorSettings,
+} from '@wordpress/block-editor';
 import { PanelBody, Button, TextControl, SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import './style.scss';
@@ -29,10 +34,19 @@ registerBlockType('transcript-blocks/transcript-block', {
     },
     speakers: {
       type: 'array',
-      default: [{ name: 'Speaker 1', color: '#000000', role: 'host' }],
+      default: [
+        {
+          name: 'Speaker 1',
+          color: '#000000',
+          role: 'host',
+          textColor: '#000000',
+          bubbleColor: '#ffffff',
+          avatarUrl: '',
+        },
+      ],
     },
   },
-  
+
   edit: (props) => {
     const {
       attributes: { url, transcript, speakers },
@@ -56,6 +70,7 @@ registerBlockType('transcript-blocks/transcript-block', {
                     })
                   }
                 />
+
                 <PanelColorSettings
                   title={__("Color Settings", "textdomain")}
                   initialOpen={false}
@@ -70,6 +85,37 @@ registerBlockType('transcript-blocks/transcript-block', {
                     },
                   ]}
                 />
+
+                <PanelColorSettings
+                  title={__("Text Color", "textdomain")}
+                  initialOpen={false}
+                  colorSettings={[
+                    {
+                      value: speaker.textColor,
+                      onChange: (textColor) =>
+                        setAttributes({
+                          speakers: speakers.map((s, j) => (i === j ? { ...s, textColor } : s)),
+                        }),
+                      label: __("Text Color", "textdomain"),
+                    },
+                  ]}
+                />
+
+                <PanelColorSettings
+                  title={__("Speech Bubble Color", "textdomain")}
+                  initialOpen={false}
+                  colorSettings={[
+                    {
+                      value: speaker.bubbleColor,
+                      onChange: (bubbleColor) =>
+                        setAttributes({
+                          speakers: speakers.map((s, j) => (i === j ? { ...s, bubbleColor } : s)),
+                        }),
+                      label: __("Speech Bubble Color", "textdomain"),
+                    },
+                  ]}
+                />
+
                 <SelectControl
                   label={__("Role", "textdomain")}
                   value={speaker.role}
@@ -83,6 +129,34 @@ registerBlockType('transcript-blocks/transcript-block', {
                     })
                   }
                 />
+
+                <MediaUpload
+                  onSelect={(media) => {
+                    setAttributes({
+                      speakers: speakers.map((s, j) => (i === j ? { ...s, avatarUrl: media.url } : s)),
+                    });
+                  }}
+                  allowedTypes={['image']}
+                  render={({ open }) => (
+                    <Button onClick={open}>
+                      {speaker.avatarUrl ? __("Replace Avatar", "textdomain") : __("Upload Avatar", "textdomain")}
+                    </Button>
+                  )}
+                />
+
+                {speaker.avatarUrl && (
+                  <Button
+                    isDestructive
+                    onClick={() =>
+                      setAttributes({
+                        speakers: speakers.map((s, j) => (i === j ? { ...s, avatarUrl: '' } : s)),
+                      })
+                    }
+                  >
+                    {__("Remove Avatar", "textdomain")}
+                  </Button>
+                )}
+
                 <Button
                   isDestructive
                   onClick={() =>
@@ -99,7 +173,17 @@ registerBlockType('transcript-blocks/transcript-block', {
               variant="primary"
               onClick={() =>
                 setAttributes({
-                  speakers: [...speakers, { name: "Speaker " + (speakers.length + 1), color: "#000000", role: "host" }],
+                  speakers: [
+                    ...speakers,
+                    {
+                      name: "Speaker " + (speakers.length + 1),
+                      color: "#000000",
+                      role: "host",
+                      textColor: '#000000',
+                      bubbleColor: '#ffffff',
+                      avatarUrl: '',
+                    },
+                  ],
                 })
               }
             >
@@ -107,7 +191,7 @@ registerBlockType('transcript-blocks/transcript-block', {
             </Button>
           </PanelBody>
         </InspectorControls>
-        
+
         <MediaUpload
           onSelect={async (media) => {
             setAttributes({ url: media.url });
@@ -119,23 +203,20 @@ registerBlockType('transcript-blocks/transcript-block', {
                 },
                 body: JSON.stringify({ id: media.id }),
               });
-          
-              // Log the response status and text for debugging
+
               console.log('HTTP response status:', response.status);
               console.log('HTTP response text:', await response.clone().text());
-              
+
               if (!response.ok) {
                 throw new Error('HTTP error ' + response.status);
               }
-          
+
               const parsedContents = await response.json();
               setAttributes({ transcript: parsedContents });
             } catch (error) {
               console.error('Error during transcript parsing:', error);
             }
           }}
-          
-          
           allowedTypes={['text/plain']}
           render={({ open }) => (
             <Button onClick={open}>
@@ -147,17 +228,17 @@ registerBlockType('transcript-blocks/transcript-block', {
         {transcript &&
           transcript.map(({ speaker, speech }, i) => {
             const speakerData = speakers.find((s) => s.name === speaker);
-          
+
             return (
               <div
                 key={i}
                 className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}
                 style={{ backgroundColor: speakerData ? speakerData.color : "#ffffff" }}
-                              >
+              >
                 <strong className="transcript-block-speech-speaker">{speaker}:</strong>
                 <div 
                   className="transcript-block-speech" 
-                  style={{ backgroundColor: speakerData ? speakerData.color : "#ffffff" }}
+                  style={{ backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}
                 >
                   <span className="transcript-block-speech-text">{speech}</span>
                 </div>
@@ -167,7 +248,7 @@ registerBlockType('transcript-blocks/transcript-block', {
       </div>
     );
   },
-  
+
   save: (props) => {
     const {
       attributes: { url, transcript, speakers },
@@ -181,17 +262,31 @@ registerBlockType('transcript-blocks/transcript-block', {
         {transcript &&
           transcript.map(({ speaker, speech }, i) => {
             const speakerData = speakers.find((s) => s.name === speaker);
-          
+
             return (
               <div
                 key={i}
                 className={`transcript-block-wrapper ${speakerData.role === 'guest' ? 'guest' : 'host'}`}
+                style={{ backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}
               >
-                <strong className="transcript-block-speech-speaker">{speaker}:</strong>
+                <strong 
+                  className="transcript-block-speech-speaker" 
+                  style={{ color: speakerData ? speakerData.color : "#000000" }}
+                >
+                  {speaker}:
+                </strong>
                 <div 
                   className="transcript-block-speech" 
-                  style={{ backgroundColor: speakerData ? speakerData.color : "#ffffff" }}
+                  style={{ color: speakerData ? speakerData.textColor : "#000000" }}
                 >
+                  {speakerData.avatarUrl && (
+                    <img
+                      src={speakerData.avatarUrl}
+                      className="transcript-block-avatar"
+                      alt={speaker + __(" Avatar", "textdomain")}
+                      style={{ borderRadius: "50%", width: "40px", height: "40px" }}
+                    />
+                  )}
                   <span className="transcript-block-speech-text">{speech}</span>
                 </div>
               </div>
