@@ -1,58 +1,61 @@
 .transcript-block-wrapper {
     display: grid;
-    grid-template-rows: auto auto; /* creates two row tracks */
-    align-items: start; /* aligns content to the start of each row */
-    justify-items: end; /* aligns items to the end (right) */
+    grid-template-columns: max-content 1fr max-content; // Added a third column for host avatar
+    align-items: end;
+    margin-bottom: 20px; // margin between each new speaker
+  
+    &:nth-of-type(1) {
+      margin-top: 20px;
+    }
   
     .transcript-block-speech-speaker {
       font-weight: bold;
-      align-self: end;
-      margin-bottom: 5px;
-      justify-self: end; /* aligns text to the end (right) */
-    }
-  
-    .transcript-block-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      position: absolute;
-      margin-top: 15px;
+      grid-column: 2; // Placing speaker's name in the second column
     }
   
     .transcript-block-speech {
       padding: 1em;
       border-radius: 8px;
-      width: 75%;
-      position: relative;
+      grid-column: 2; // Placing speech bubble in the second column
+      max-width: 70%; // Limiting speech bubble's width to 2/3 of the container's width
+      justify-self: right; // Aligning speech bubble to the right for the host
+      text-align: left; // Left aligning the text inside the speech bubble
+    }
+  
+    .transcript-block-avatar {
+      align-self: end;
+      margin-bottom: -5px; // Slightly negative margin to pull it below the speech bubble
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
     }
   }
   
   .transcript-block-wrapper.guest {
-    .transcript-block-speech-speaker {
+    .transcript-block-speech-speaker,
+    .transcript-block-speech {
       text-align: left;
-      justify-self: start; /* aligns text to the start (left) for guests */
     }
   
     .transcript-block-avatar {
-      left: 10px;
+      grid-column: 1; // Placing avatar in the first column for guests
+      grid-row: 2;
     }
   
     .transcript-block-speech {
-      justify-self: start; /* aligns speech bubble to the start (left) for guests */
+      justify-self: left; // Aligning speech bubble to the left for the guest
     }
   }
   
   .transcript-block-wrapper.host {
-    .transcript-block-speech-speaker {
+    .transcript-block-speech-speaker,
+    .transcript-block-speech {
       text-align: right;
     }
   
     .transcript-block-avatar {
-      right: 10px;
-    }
-  
-    .transcript-block-speech {
-      justify-self: end; /* aligns speech bubble to the end (right) for hosts */
+      grid-column: 3; // Placing avatar in the third column for hosts
+      grid-row: 2;
     }
   }
   
