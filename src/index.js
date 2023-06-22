@@ -119,15 +119,23 @@ registerBlockType('transcript-blocks/transcript-block', {
                 },
                 body: JSON.stringify({ id: media.id }),
               });
+          
+              // Log the response status and text for debugging
+              console.log('HTTP response status:', response.status);
+              console.log('HTTP response text:', await response.clone().text());
+              
               if (!response.ok) {
                 throw new Error('HTTP error ' + response.status);
               }
+          
               const parsedContents = await response.json();
               setAttributes({ transcript: parsedContents });
             } catch (error) {
-              console.error(error);
+              console.error('Error during transcript parsing:', error);
             }
           }}
+          
+          
           allowedTypes={['text/plain']}
           render={({ open }) => (
             <Button onClick={open}>
@@ -143,8 +151,9 @@ registerBlockType('transcript-blocks/transcript-block', {
             return (
               <div
                 key={i}
-                className={`transcript-block-wrapper ${speakerData.role === 'guest' ? 'guest' : 'host'}`}
-              >
+                className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}
+                style={{ backgroundColor: speakerData ? speakerData.color : "#ffffff" }}
+                              >
                 <strong className="transcript-block-speech-speaker">{speaker}:</strong>
                 <div 
                   className="transcript-block-speech" 
