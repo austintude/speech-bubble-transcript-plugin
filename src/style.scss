@@ -11,23 +11,32 @@
       justify-self: end; /* aligns text to the end (right) */
     }
   
+    .transcript-block-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      position: absolute;
+      margin-top: 15px;
+    }
+  
     .transcript-block-speech {
       padding: 1em;
       border-radius: 8px;
       width: 75%;
+      position: relative;
     }
   }
-  .speaker-avatar {
-    position: absolute;
-  }
+  
   .transcript-block-wrapper.guest {
     .transcript-block-speech-speaker {
       text-align: left;
       justify-self: start; /* aligns text to the start (left) for guests */
     }
-    .speaker-avatar {
-        left: 0;
-      }
+  
+    .transcript-block-avatar {
+      left: 10px;
+    }
+  
     .transcript-block-speech {
       justify-self: start; /* aligns speech bubble to the start (left) for guests */
     }
@@ -37,9 +46,11 @@
     .transcript-block-speech-speaker {
       text-align: right;
     }
-    .speaker-avatar {
-        right: 0;
-      }
+  
+    .transcript-block-avatar {
+      right: 10px;
+    }
+  
     .transcript-block-speech {
       justify-self: end; /* aligns speech bubble to the end (right) for hosts */
     }

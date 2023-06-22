@@ -37,9 +37,9 @@ registerBlockType('transcript-blocks/transcript-block', {
       default: [
         {
           name: 'Speaker 1',
-          color: '#000000',
+          color: '#ffffff',
           role: 'host',
-          textColor: '#000000',
+          textColor: '#ffffff',
           bubbleColor: '#ffffff',
           avatarUrl: '',
         },
@@ -129,7 +129,8 @@ registerBlockType('transcript-blocks/transcript-block', {
                     })
                   }
                 />
-
+<br />
+<br />
                 <MediaUpload
                   onSelect={(media) => {
                     setAttributes({
@@ -156,7 +157,8 @@ registerBlockType('transcript-blocks/transcript-block', {
                     {__("Remove Avatar", "textdomain")}
                   </Button>
                 )}
-
+<br />
+<br />
                 <Button
                   isDestructive
                   onClick={() =>
@@ -177,10 +179,10 @@ registerBlockType('transcript-blocks/transcript-block', {
                     ...speakers,
                     {
                       name: "Speaker " + (speakers.length + 1),
-                      color: "#000000",
+                      color: "#ffffff",
                       role: "host",
-                      textColor: '#000000',
-                      bubbleColor: '#ffffff',
+                      textColor: '#ffffff',
+                      bubbleColor: '#777',
                       avatarUrl: '',
                     },
                   ],
@@ -231,17 +233,19 @@ registerBlockType('transcript-blocks/transcript-block', {
 
             return (
               <div
-                key={i}
-                className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}
-                style={{ backgroundColor: speakerData ? speakerData.color : "#ffffff" }}
-              >
-                <strong className="transcript-block-speech-speaker">{speaker}:</strong>
-                <div 
-                  className="transcript-block-speech" 
-                  style={{ backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}
-                >
-                  <span className="transcript-block-speech-text">{speech}</span>
-                </div>
+  key={i}
+  className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}
+>
+
+<strong className="transcript-block-speech-speaker">
+  {speaker}:
+</strong>
+<div 
+  className="transcript-block-speech" 
+  style={{ color: speakerData ? speakerData.textColor : "#000000", backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}
+>
+  <span className="transcript-block-speech-text">{speech}</span>
+</div>
               </div>
             );
           })}
@@ -265,30 +269,31 @@ registerBlockType('transcript-blocks/transcript-block', {
 
             return (
               <div
-                key={i}
-                className={`transcript-block-wrapper ${speakerData.role === 'guest' ? 'guest' : 'host'}`}
-                style={{ backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}
-              >
-                <strong 
-                  className="transcript-block-speech-speaker" 
-                  style={{ color: speakerData ? speakerData.color : "#000000" }}
-                >
-                  {speaker}:
-                </strong>
-                <div 
-                  className="transcript-block-speech" 
-                  style={{ color: speakerData ? speakerData.textColor : "#000000" }}
-                >
-                  {speakerData.avatarUrl && (
-                    <img
-                      src={speakerData.avatarUrl}
-                      className="transcript-block-avatar"
-                      alt={speaker + __(" Avatar", "textdomain")}
-                      style={{ borderRadius: "50%", width: "40px", height: "40px" }}
-                    />
-                  )}
-                  <span className="transcript-block-speech-text">{speech}</span>
-                </div>
+  key={i}
+  className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}
+>
+
+<strong className="transcript-block-speech-speaker">
+  {speaker}:
+</strong>
+
+
+{speakerData.avatarUrl && (
+  <img
+    src={speakerData.avatarUrl}
+    className={`transcript-block-avatar ${speakerData.role}`}
+    alt={speaker + __(" Avatar", "textdomain")}
+    style={{ borderRadius: "50%", width: "40px", height: "40px" }}
+  />
+)}
+
+<div 
+  className="transcript-block-speech" 
+  style={{ color: speakerData ? speakerData.textColor : "#000000", backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}
+>
+  <span className="transcript-block-speech-text">{speech}</span>
+</div>
+
               </div>
             );
           })}
