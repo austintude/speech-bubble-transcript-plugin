@@ -48,14 +48,18 @@
   }
   
   .transcript-block-wrapper.host {
-    .transcript-block-speech-speaker,
-    .transcript-block-speech {
+    .transcript-block-speech-speaker {
       text-align: right;
     }
-  
+    
+    .transcript-block-speech {
+      text-align: left;
+    }
+    
     .transcript-block-avatar {
       grid-column: 3; // Placing avatar in the third column for hosts
       grid-row: 2;
     }
   }
+  
   
