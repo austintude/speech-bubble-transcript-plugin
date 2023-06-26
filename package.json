@@ -17,6 +17,8 @@
 	"devDependencies": {
 		"@wordpress/scripts": "^26.5.0",
 		"css-loader": "^6.8.1",
+		"gulp": "^4.0.2",
+		"gulp-zip": "^5.1.0",
 		"style-loader": "^3.3.3"
 	}
 }

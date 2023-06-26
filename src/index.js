@@ -135,18 +135,23 @@ registerBlockType('transcript-blocks/transcript-block', {
                   onSelect={(media) => {
                     setAttributes({
                       speakers: speakers.map((s, j) => (i === j ? { ...s, avatarUrl: media.url } : s)),
-                    });
-                  }}
-                  allowedTypes={['image']}
-                  render={({ open }) => (
-                    <Button onClick={open}>
+                  });
+              }}
+              allowedTypes={['image']}
+              render={({ open }) => (
+                  <>
+                  {speaker.avatarUrl && <img src={speaker.avatarUrl} alt="Speaker Avatar" style={{ maxWidth: "100px", maxHeight: "100px" }}/>}
+                  <br />
+                  <Button variant="primary" onClick={open}>
                       {speaker.avatarUrl ? __("Replace Avatar", "textdomain") : __("Upload Avatar", "textdomain")}
-                    </Button>
+                  </Button>
+                  </>
                   )}
                 />
 
                 {speaker.avatarUrl && (
-                  <Button
+                                
+                 <Button
                     isDestructive
                     onClick={() =>
                       setAttributes({
@@ -169,6 +174,8 @@ registerBlockType('transcript-blocks/transcript-block', {
                 >
                   {__("Remove Speaker", "textdomain")}
                 </Button>
+                <br />
+<br />
               </div>
             ))}
             <Button
@@ -229,9 +236,18 @@ registerBlockType('transcript-blocks/transcript-block', {
 
         {transcript &&
           transcript.map(({ speaker, speech }, i) => {
-            const speakerData = speakers.find((s) => s.name === speaker);
-
-            return (
+            let speakerData = speakers.find((s) => s.name === speaker);
+  if(!speakerData){
+    speakerData = {
+      name: speaker,
+      color: "#ffffff", // default color
+      role: "host", // default role
+      textColor: '#ffffff', // default text color
+      bubbleColor: '#777', // default bubble color
+      avatarUrl: '' // default avatar url
+    }
+  }
+  return (
               <div
   key={i}
   className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}
@@ -265,8 +281,17 @@ registerBlockType('transcript-blocks/transcript-block', {
         {url && <a href={url} download>{__("Download Transcript", "textdomain")}</a>}
         {transcript &&
           transcript.map(({ speaker, speech }, i) => {
-            const speakerData = speakers.find((s) => s.name === speaker);
-
+            let speakerData = speakers.find((s) => s.name === speaker);
+            if(!speakerData){
+              speakerData = {
+                name: speaker,
+                color: "#ffffff", // default color
+                role: "host", // default role
+                textColor: '#ffffff', // default text color
+                bubbleColor: '#777', // default bubble color
+                avatarUrl: '' // default avatar url
+              }
+            }
             return (
               <div
   key={i}

@@ -3,6 +3,7 @@
     grid-template-columns: max-content 1fr max-content; // Added a third column for host avatar
     align-items: end;
     margin-bottom: 20px; // margin between each new speaker
+    grid-gap: 10px;
   
     &:nth-of-type(1) {
       margin-top: 20px;

@@ -1,1 +1,57 @@
-.transcript-block-wrapper{align-items:end;display:grid;grid-template-columns:max-content 1fr max-content;margin-bottom:20px}.transcript-block-wrapper:first-of-type{margin-top:20px}.transcript-block-wrapper .transcript-block-speech-speaker{font-weight:700;grid-column:2}.transcript-block-wrapper .transcript-block-speech{border-radius:8px;grid-column:2;justify-self:right;max-width:70%;padding:1em;text-align:left}.transcript-block-wrapper .transcript-block-avatar{align-self:end;border-radius:50%;height:40px;margin-bottom:-5px;width:40px}.transcript-block-wrapper.guest .transcript-block-speech,.transcript-block-wrapper.guest .transcript-block-speech-speaker{text-align:left}.transcript-block-wrapper.guest .transcript-block-avatar{grid-column:1;grid-row:2}.transcript-block-wrapper.guest .transcript-block-speech{justify-self:left}.transcript-block-wrapper.host .transcript-block-speech-speaker{text-align:right}.transcript-block-wrapper.host .transcript-block-speech{text-align:left}.transcript-block-wrapper.host .transcript-block-avatar{grid-column:3;grid-row:2}
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/style.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+.transcript-block-wrapper {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
+  align-items: end;
+  margin-bottom: 20px;
+  grid-gap: 10px;
+}
+.transcript-block-wrapper:nth-of-type(1) {
+  margin-top: 20px;
+}
+.transcript-block-wrapper .transcript-block-speech-speaker {
+  font-weight: bold;
+  grid-column: 2;
+}
+.transcript-block-wrapper .transcript-block-speech {
+  padding: 1em;
+  border-radius: 8px;
+  grid-column: 2;
+  max-width: 70%;
+  justify-self: right;
+  text-align: left;
+}
+.transcript-block-wrapper .transcript-block-avatar {
+  align-self: end;
+  margin-bottom: -5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.transcript-block-wrapper.guest .transcript-block-speech-speaker,
+.transcript-block-wrapper.guest .transcript-block-speech {
+  text-align: left;
+}
+.transcript-block-wrapper.guest .transcript-block-avatar {
+  grid-column: 1;
+  grid-row: 2;
+}
+.transcript-block-wrapper.guest .transcript-block-speech {
+  justify-self: left;
+}
+
+.transcript-block-wrapper.host .transcript-block-speech-speaker {
+  text-align: right;
+}
+.transcript-block-wrapper.host .transcript-block-speech {
+  text-align: left;
+}
+.transcript-block-wrapper.host .transcript-block-avatar {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+/*# sourceMappingURL=style-index.css.map*/
