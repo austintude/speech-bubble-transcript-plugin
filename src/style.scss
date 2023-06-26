@@ -63,4 +63,11 @@
     }
   }
   
-  
+  .transcript-block-speech a:where(:not(.wp-element-button)) {
+    color: var(--link-color);
+    text-decoration: underline;
+}
+
+.transcript-block-speech a:where(:not(.wp-element-button)):hover {
+    color: var(--link-hover-color);
+}
