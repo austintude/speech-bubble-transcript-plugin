@@ -13,6 +13,7 @@ import {
 import { PanelBody, Button, TextControl, SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import './style.scss';
+import { RichText } from '@wordpress/block-editor';
 
 registerBlockType('transcript-blocks/transcript-block', {
   apiVersion: 2,
@@ -248,21 +249,21 @@ registerBlockType('transcript-blocks/transcript-block', {
     }
   }
   return (
-              <div
-  key={i}
-  className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}
->
-
-<strong className="transcript-block-speech-speaker">
-  {speaker}:
-</strong>
-<div 
-  className="transcript-block-speech" 
-  style={{ color: speakerData ? speakerData.textColor : "#000000", backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}
->
-  <span className="transcript-block-speech-text">{speech}</span>
-</div>
-              </div>
+    <div key={i} className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}>
+    <strong className="transcript-block-speech-speaker">{speaker}:</strong>
+    <div className="transcript-block-speech" style={{ color: speakerData ? speakerData.textColor : "#000000", backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}>
+      <RichText
+        tagName="span"
+        className="transcript-block-speech-text"
+        value={speech}
+        onChange={(newSpeech) =>
+          setAttributes({
+            transcript: transcript.map((s, j) => (i === j ? { ...s, speech: newSpeech } : s)),
+          })
+        }
+      />
+    </div>
+  </div>
             );
           })}
       </div>
