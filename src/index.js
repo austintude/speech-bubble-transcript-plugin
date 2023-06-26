@@ -46,11 +46,19 @@ registerBlockType('transcript-blocks/transcript-block', {
         },
       ],
     },
+    linkColor: {
+      type: 'string',
+      default: '#0000ff', // default link color
+    },
+    linkHoverColor: {
+      type: 'string',
+      default: '#ff0000', // default link hover color
+    },
   },
 
   edit: (props) => {
     const {
-      attributes: { url, transcript, speakers },
+      attributes: { url, transcript, speakers, linkColor, linkHoverColor },
       setAttributes,
     } = props;
 
@@ -101,6 +109,35 @@ registerBlockType('transcript-blocks/transcript-block', {
                     },
                   ]}
                 />
+<PanelColorSettings
+  title={__("Link Color", "textdomain")}
+  initialOpen={false}
+  colorSettings={[
+    {
+      value: linkColor,
+      onChange: (linkColor) =>
+        setAttributes({
+          linkColor
+        }),
+      label: __("Link Color", "textdomain"),
+    },
+  ]}
+/>
+
+<PanelColorSettings
+  title={__("Link Hover Color", "textdomain")}
+  initialOpen={false}
+  colorSettings={[
+    {
+      value: linkHoverColor,
+      onChange: (linkHoverColor) =>
+        setAttributes({
+          linkHoverColor
+        }),
+      label: __("Link Hover Color", "textdomain"),
+    },
+  ]}
+/>
 
                 <PanelColorSettings
                   title={__("Speech Bubble Color", "textdomain")}
@@ -251,7 +288,8 @@ registerBlockType('transcript-blocks/transcript-block', {
   return (
     <div key={i} className={`transcript-block-wrapper ${speakerData && speakerData.role === 'guest' ? 'guest' : 'host'}`}>
     <strong className="transcript-block-speech-speaker">{speaker}:</strong>
-    <div className="transcript-block-speech" style={{ color: speakerData ? speakerData.textColor : "#000000", backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}>
+    <div className="transcript-block-speech" style={{ color: speakerData ? speakerData.textColor : "#000000", backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff", '--link-color': linkColor, 
+    '--link-hover-color': linkHoverColor }}>
       <RichText
         tagName="span"
         className="transcript-block-speech-text"
@@ -272,7 +310,7 @@ registerBlockType('transcript-blocks/transcript-block', {
 
   save: (props) => {
     const {
-      attributes: { url, transcript, speakers },
+      attributes: { url, transcript, speakers, linkColor, linkHoverColor },
     } = props;
 
     const blockProps = useBlockProps.save();
@@ -315,9 +353,12 @@ registerBlockType('transcript-blocks/transcript-block', {
 
 <div 
   className="transcript-block-speech" 
-  style={{ color: speakerData ? speakerData.textColor : "#000000", backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff" }}
+  style={{ color: speakerData ? speakerData.textColor : "#000000", backgroundColor: speakerData ? speakerData.bubbleColor : "#ffffff",
+  '--link-color': linkColor, 
+  '--link-hover-color': linkHoverColor }}
 >
-  <span className="transcript-block-speech-text">{speech}</span>
+<span className="transcript-block-speech-text" dangerouslySetInnerHTML={{ __html: speech }}></span>
+
 </div>
 
               </div>
