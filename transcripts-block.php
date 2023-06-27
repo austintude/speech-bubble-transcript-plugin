@@ -4,7 +4,7 @@
  * Description:       Add downloadable transcripts to your post.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           1.3.6
+ * Version:           1.3.7
  * Author:            We Rock DM
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,16 +13,17 @@
  * @package           create-block
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 function create_block_transcripts_block_block_init() {
+    $index_js = 'build/index.js';
     wp_register_script(
         'transcripts-block-editor',
-        plugins_url( 'build/index.js', __FILE__ ),
+        plugins_url( $index_js, __FILE__ ),
         array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components' ),
-        filemtime( plugin_dir_path( __FILE__ ) . 'build/index.js' ),
+        filemtime( plugin_dir_path( __FILE__ ) . $index_js ),
         true
     );
 
@@ -103,10 +104,14 @@ add_action( 'rest_api_init', function () {
 } );
 
 function transcript_block_scripts() {
+    $index_js = 'build/index.js';
+    $style_index_css = 'build/style-index.css';
+
     wp_enqueue_script(
         'transcript-block-script',
-        plugin_dir_url( __FILE__ ) . 'build/index.js',
+        plugin_dir_url( __FILE__ ) . $index_js,
         array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'jquery'),
+        filemtime( plugin_dir_path( __FILE__ ) . $index_js ),
         true
     );
 
@@ -117,20 +122,23 @@ function transcript_block_scripts() {
     );
 
     wp_localize_script('transcript-block-script', 'transcriptBlockParams', $speaker_colors);
+
     wp_enqueue_style(
         'transcript-block-style',
-        plugins_url( 'build/style-index.css', __FILE__ ),
+        plugins_url( $style_index_css, __FILE__ ),
         array(),
-        filemtime( plugin_dir_path( __FILE__ ) . 'build/style-index.css' )
+        filemtime( plugin_dir_path( __FILE__ ) . $style_index_css )
     );
 }
 
 function transcript_block_frontend_styles() {
+    $style_index_css = 'build/style-index.css';
+
     wp_enqueue_style(
         'transcript-block-frontend-style',
-        plugins_url( 'build/style-index.css', __FILE__ ),
+        plugins_url( $style_index_css, __FILE__ ),
         array(),
-        filemtime( plugin_dir_path( __FILE__ ) . 'build/style-index.css' )
+        filemtime( plugin_dir_path( __FILE__ ) . $style_index_css )
     );
 }
 
