@@ -46,6 +46,10 @@ registerBlockType('transcript-blocks/transcript-block', {
         },
       ],
     },
+    editedSpeakerIndex: {
+      type: 'number',
+      default: 0,
+    },
     linkColor: {
       type: 'string',
       default: '#0000ff', // default link color
@@ -58,18 +62,29 @@ registerBlockType('transcript-blocks/transcript-block', {
 
   edit: (props) => {
     const {
-      attributes: { url, transcript, speakers, linkColor, linkHoverColor },
+      attributes: { url, transcript, speakers, linkColor, linkHoverColor, editedSpeakerIndex },
       setAttributes,
     } = props;
 
     const blockProps = useBlockProps({ className: 'my-class-name' });
 
+    const handleSelect = (index) => {
+      setAttributes({
+        editedSpeakerIndex: index,
+      });
+    };
+
     return (
       <div {...blockProps}>
         <InspectorControls>
           <PanelBody title={__("Speakers Settings", "textdomain")} initialOpen={true}>
-            {speakers.map((speaker, i) => (
-              <div key={i}>
+          {speakers.map((speaker, i) => (
+  <PanelBody title={speaker.name} initialOpen={false} key={i}>
+    <Button isSecondary onClick={() => handleSelect(i)}>
+      {__("Edit Speaker", "textdomain")}
+    </Button>
+    {i === editedSpeakerIndex && (
+                  <div>
                 <TextControl
                   label={__("Name", "textdomain")}
                   value={speaker.name}
@@ -79,22 +94,20 @@ registerBlockType('transcript-blocks/transcript-block', {
                     })
                   }
                 />
-
-                <PanelColorSettings
-                  title={__("Color Settings", "textdomain")}
+<PanelColorSettings
+                  title={__("Speech Bubble Color", "textdomain")}
                   initialOpen={false}
                   colorSettings={[
                     {
-                      value: speaker.color,
-                      onChange: (color) =>
+                      value: speaker.bubbleColor,
+                      onChange: (bubbleColor) =>
                         setAttributes({
-                          speakers: speakers.map((s, j) => (i === j ? { ...s, color } : s)),
+                          speakers: speakers.map((s, j) => (i === j ? { ...s, bubbleColor } : s)),
                         }),
-                      label: __("Background Color", "textdomain"),
+                      label: __("Speech Bubble Color", "textdomain"),
                     },
                   ]}
                 />
-
                 <PanelColorSettings
                   title={__("Text Color", "textdomain")}
                   initialOpen={false}
@@ -139,20 +152,7 @@ registerBlockType('transcript-blocks/transcript-block', {
   ]}
 />
 
-                <PanelColorSettings
-                  title={__("Speech Bubble Color", "textdomain")}
-                  initialOpen={false}
-                  colorSettings={[
-                    {
-                      value: speaker.bubbleColor,
-                      onChange: (bubbleColor) =>
-                        setAttributes({
-                          speakers: speakers.map((s, j) => (i === j ? { ...s, bubbleColor } : s)),
-                        }),
-                      label: __("Speech Bubble Color", "textdomain"),
-                    },
-                  ]}
-                />
+                
 
                 <SelectControl
                   label={__("Role", "textdomain")}
@@ -167,8 +167,6 @@ registerBlockType('transcript-blocks/transcript-block', {
                     })
                   }
                 />
-<br />
-<br />
                 <MediaUpload
                   onSelect={(media) => {
                     setAttributes({
@@ -214,7 +212,9 @@ registerBlockType('transcript-blocks/transcript-block', {
                 </Button>
                 <br />
 <br />
-              </div>
+</div>
+                )}
+              </PanelBody>
             ))}
             <Button
               variant="primary"
@@ -236,6 +236,14 @@ registerBlockType('transcript-blocks/transcript-block', {
             >
               {__("Add Speaker", "textdomain")}
             </Button>
+            </PanelBody>
+          <PanelBody title={__("Transcript", "textdomain")} initialOpen={false}>
+            <TextControl
+              label={__("Transcript URL", "textdomain")}
+              value={url}
+              onChange={(url) => setAttributes({ url })}
+            />
+            
           </PanelBody>
         </InspectorControls>
 
