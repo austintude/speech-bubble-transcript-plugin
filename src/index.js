@@ -80,7 +80,7 @@ registerBlockType('transcript-blocks/transcript-block', {
           <PanelBody title={__("Speakers Settings", "textdomain")} initialOpen={true}>
           {speakers.map((speaker, i) => (
   <PanelBody title={speaker.name} initialOpen={false} key={i}>
-    <Button isSecondary onClick={() => handleSelect(i)}>
+    <Button variant="secondar" onClick={() => handleSelect(i)}>
       {__("Edit Speaker", "textdomain")}
     </Button>
     {i === editedSpeakerIndex && (
