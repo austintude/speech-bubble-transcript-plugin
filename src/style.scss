@@ -22,7 +22,22 @@
       max-width: 70%; // Limiting speech bubble's width to 2/3 of the container's width
       justify-self: right; // Aligning speech bubble to the right for the host
       text-align: left; // Left aligning the text inside the speech bubble
-    }
+    
+    // &::before  {
+    //   content: "";
+    //   position: absolute;
+    //   width: 20px;
+    //   height: 20px;
+    //   background-color: #000;
+    //   bottom: -10px; 
+    //   left: 20px; 
+    //   clip-path: polygon(100% 100%, 0 0, 100% 0);
+    //   border-radius: 0 0 0 10px; 
+    // }
+    &:not(:last-child) {
+      margin-bottom: 10px; // add space between broken speech bubbles
+  }
+  }
   
     .transcript-block-avatar {
       align-self: end;
@@ -52,10 +67,12 @@
   .transcript-block-wrapper.host {
     .transcript-block-speech-speaker {
       text-align: right;
+      position: relative;
     }
     
     .transcript-block-speech {
       text-align: left;
+      position: relative;
     }
     
     .transcript-block-avatar {

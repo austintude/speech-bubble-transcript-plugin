@@ -4,7 +4,7 @@
  * Description:       Add downloadable transcripts to your post.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           1.3.7
+ * Version:           1.3.9
  * Author:            We Rock DM
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -62,18 +62,24 @@ function handle_uploaded_transcript( WP_REST_Request $request ) {
     $cur_speech = '';
 
     foreach ($lines as $line) {
-        if ($line == '') continue;  // Skip empty lines
+        if ($line == '') continue; // Skip empty lines
 
-        $parts = explode(":", $line, 2);  // Split at the first colon
+        $parts = explode(":", $line, 2); // Split at the first colon
 
         if (count($parts) == 2) {
             // This line starts a new speech
             if ($cur_speaker != '' && $cur_speech != '') {
-                // Add the previous speech to the parsed contents
-                $parsed_contents[] = array(
-                    "speaker" => $cur_speaker,
-                    "speech" => $cur_speech,
-                );
+                // Break the speech into sentences
+                $sentences = explode('. ', $cur_speech);
+                $num_sentences = count($sentences);
+
+                for ($i = 0; $i < $num_sentences; $i += 3) {
+                    $speech_chunk = implode('. ', array_slice($sentences, $i, 3));
+                    $parsed_contents[] = array(
+                        "speaker" => $cur_speaker,
+                        "speech" => $speech_chunk,
+                    );
+                }
             }
 
             $cur_speaker = trim($parts[0]);
@@ -84,16 +90,23 @@ function handle_uploaded_transcript( WP_REST_Request $request ) {
         }
     }
 
-    // Add the final speech to the parsed contents
+     // Handle the final speech in the same way as above
     if ($cur_speaker != '' && $cur_speech != '') {
-        $parsed_contents[] = array(
-            "speaker" => $cur_speaker,
-            "speech" => $cur_speech,
-        );
+        // Break the speech into sentences
+        $sentences = explode('. ', $cur_speech);
+        $num_sentences = count($sentences);
+
+        for ($i = 0; $i < $num_sentences; $i += 3) {
+            $speech_chunk = implode('. ', array_slice($sentences, $i, 3));
+            $parsed_contents[] = array(
+                "speaker" => $cur_speaker,
+                "speech" => $speech_chunk,
+            );
+        }
     }
 
     // Return the parsed contents
-    return rest_ensure_response( $parsed_contents );
+    return rest_ensure_response($parsed_contents);
 }
 
 add_action( 'rest_api_init', function () {
